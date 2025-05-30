@@ -1,7 +1,8 @@
 package edu.az.example.web.travelplanning.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import edu.az.example.web.travelplanning.enums.GENDER;
+import edu.az.example.web.travelplanning.enums.Gender;
+import edu.az.example.web.travelplanning.validation.OnCreate;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -30,7 +31,7 @@ public class UserDto {
     private String email;
 
     @NotNull
-    private GENDER gender;
+    private Gender gender;
 
     @NotBlank(groups = OnCreate.class)
     private String password;

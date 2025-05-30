@@ -1,6 +1,6 @@
 package edu.az.example.web.travelplanning.enums;
 
-public enum GENDER {
+public enum Gender {
     MALE,
     FEMALE,
     OTHER;
