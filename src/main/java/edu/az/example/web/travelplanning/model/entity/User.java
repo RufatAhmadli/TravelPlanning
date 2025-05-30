@@ -1,6 +1,6 @@
 package edu.az.example.web.travelplanning.model.entity;
 
-import edu.az.example.web.travelplanning.enums.GENDER;
+import edu.az.example.web.travelplanning.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,5 +35,5 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private GENDER gender;
+    private Gender gender;
 }
