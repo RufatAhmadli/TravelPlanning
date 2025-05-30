@@ -29,4 +29,7 @@ public class AddressDto {
 
     @NotNull
     private AddressType type;
+
+    @NotNull
+    private Long userId;
 }

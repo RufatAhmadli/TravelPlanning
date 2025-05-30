@@ -6,6 +6,8 @@ import edu.az.example.web.travelplanning.validation.OnCreate;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.List;
+
 
 @Data
 @AllArgsConstructor
@@ -36,4 +38,5 @@ public class UserDto {
     @NotBlank(groups = OnCreate.class)
     private String password;
 
+    List<AddressDto> addresses;
 }
