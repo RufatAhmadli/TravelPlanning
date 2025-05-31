@@ -36,5 +36,7 @@ public class Address {
     @Column(nullable = false)
     private AddressType addressType;
 
-
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;
 }
