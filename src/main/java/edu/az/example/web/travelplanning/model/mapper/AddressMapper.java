@@ -7,25 +7,27 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AddressMapper {
+
     @Mapping(target = "userId", source = "user.id")
-    @Mapping(target ="type" ,source = "addressType")
+    @Mapping(target = "type", source = "addressType")
     AddressDto toDto(Address address);
 
     @Mapping(target = "user", source = "userId")
     @Mapping(target = "id", ignore = true)
-    @Mapping(target ="addressType" ,source = "type")
+    @Mapping(target = "addressType", source = "type")
     Address toAddress(AddressDto addressDto);
 
     @Mapping(target = "user", source = "userId")
     @Mapping(target = "id", ignore = true)
-    @Mapping(target ="addressType" ,source = "type")
-    void toAddressEntity(@MappingTarget Address address,AddressDto addressDto);
+    @Mapping(target = "addressType", source = "type")
+    void toAddressEntity(@MappingTarget Address address, AddressDto addressDto);
 
     default User map(Long userId) {
         if (userId == null) return null;
         User user = new User();
         user.setId(userId);
         return user;
-    }}
+    }
+}

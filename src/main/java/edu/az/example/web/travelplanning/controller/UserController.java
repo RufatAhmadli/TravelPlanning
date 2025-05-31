@@ -1,5 +1,6 @@
 package edu.az.example.web.travelplanning.controller;
 
+import edu.az.example.web.travelplanning.model.dto.AddressDto;
 import edu.az.example.web.travelplanning.validation.OnCreate;
 import edu.az.example.web.travelplanning.model.dto.UserDto;
 import edu.az.example.web.travelplanning.service.UserService;
@@ -29,6 +30,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserDto getById(@PathVariable Long id) {
         return userService.findById(id);
+    }
+
+    @GetMapping("/addresses/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AddressDto> getAddressesByUserId(@PathVariable Long id) {
+        return userService.findAddressesByUserId(id);
     }
 
     @GetMapping("/name/{name}")
