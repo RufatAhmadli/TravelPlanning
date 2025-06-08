@@ -29,7 +29,7 @@ public class User {
     @Column(nullable = false)
     private Integer age;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -39,6 +39,23 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_trips",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "trip_id")
+    )
+    private List<Trip> trips;
+
+    public void addTrip(Trip trip) {
+        trips.add(trip);
+        trip.getUsers().add(this);
+    }
+    public void removeTrip(Trip trip) {
+        trips.remove(trip);
+        trip.getUsers().remove(this);
+    }
 }
