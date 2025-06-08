@@ -38,5 +38,6 @@ public class UserDto {
     @NotBlank(groups = OnCreate.class)
     private String password;
 
-    List<AddressDto> addresses;
+    private List<AddressDto> addresses;
+    private List<TripDto> trips;
 }
