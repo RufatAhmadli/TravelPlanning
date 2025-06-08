@@ -4,8 +4,8 @@ import edu.az.example.web.travelplanning.model.dto.AddressDto;
 import edu.az.example.web.travelplanning.model.dto.UserDto;
 import edu.az.example.web.travelplanning.model.entity.Address;
 import edu.az.example.web.travelplanning.model.entity.User;
-import edu.az.example.web.travelplanning.model.mapper.AddressMapper;
-import edu.az.example.web.travelplanning.model.mapper.UserMapper;
+import edu.az.example.web.travelplanning.mapper.AddressMapper;
+import edu.az.example.web.travelplanning.mapper.UserMapper;
 import edu.az.example.web.travelplanning.repository.AddressRepository;
 import edu.az.example.web.travelplanning.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(Transactional.TxType.REQUIRED)
@@ -67,14 +66,12 @@ public class UserService {
     public List<AddressDto> findAddressesByUserId(Long userId) {
         List<Address> addresses = addressRepository.findAllByUserId(userId);
         return addresses.stream()
-                .map(addressMapper::toDto)
+                .map(addressMapper::toAddressDto)
                 .toList();
     }
 
     public UserDto create(UserDto userDto) {
         User user = userMapper.toUser(userDto);
-
-        // Manually assign 'user' to each Address to set the bidirectional relationship
         if (user.getAddresses() != null) {
             for (var address : user.getAddresses()) {
                 address.setUser(user);

@@ -2,6 +2,7 @@ package edu.az.example.web.travelplanning.model.dto;
 
 import edu.az.example.web.travelplanning.enums.AddressType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,5 +32,5 @@ public class AddressDto {
     private AddressType type;
 
     @NotNull
-    private Long userId;
+    private UserDto user;
 }
