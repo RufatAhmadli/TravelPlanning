@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
-    @Null
+    @Null(groups = OnCreate.class)
     private Long id;
 
     @NotNull

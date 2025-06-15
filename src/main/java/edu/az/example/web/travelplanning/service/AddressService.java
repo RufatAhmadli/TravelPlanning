@@ -6,11 +6,14 @@ import edu.az.example.web.travelplanning.model.entity.Address;
 import edu.az.example.web.travelplanning.mapper.AddressMapper;
 import edu.az.example.web.travelplanning.repository.AddressRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class AddressService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;

@@ -4,8 +4,9 @@ import edu.az.example.web.travelplanning.model.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
-@Mapper(uses = {AddressMapper.class,TripMapper.class})
+@Mapper(uses = {TripMapper.class,AddressMapper.class})
 public interface UserMapper {
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "firstName", source = "name")
