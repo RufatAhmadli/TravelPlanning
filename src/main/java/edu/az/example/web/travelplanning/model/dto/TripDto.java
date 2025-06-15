@@ -1,5 +1,6 @@
 package edu.az.example.web.travelplanning.model.dto;
 
+import edu.az.example.web.travelplanning.validation.OnCreate;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class TripDto {
-
+    @Null(groups = OnCreate.class)
     private Long id;
     @NotBlank
     @Size(min = 2, max = 30)

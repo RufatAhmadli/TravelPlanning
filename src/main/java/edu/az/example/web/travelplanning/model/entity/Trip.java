@@ -1,6 +1,7 @@
 package edu.az.example.web.travelplanning.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.mapstruct.Mapper;
