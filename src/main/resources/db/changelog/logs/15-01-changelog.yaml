@@ -1,0 +1,193 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1749982492535-1
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_addresses
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: street
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: №
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: postal_code
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: address_type
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+            tableName: addresses
+  - changeSet:
+      id: 1749982492535-2
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_trips
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: departure
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: destination
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: departure_time
+                  type: DATE
+              - column:
+                  constraints:
+                    nullable: false
+                  name: arrival_time
+                  type: DATE
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: trips
+  - changeSet:
+      id: 1749982492535-3
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_users
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: family_name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: age
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: gender
+                  type: VARCHAR(255)
+            tableName: users
+  - changeSet:
+      id: 1749982492535-4
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: trip_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+            tableName: users_trips
+  - changeSet:
+      id: 1749982492535-5
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: email
+            constraintName: uc_users_email
+            tableName: users
+  - changeSet:
+      id: 1749982492535-6
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: addresses
+            constraintName: FK_ADDRESSES_ON_USER
+            referencedColumnNames: id
+            referencedTableName: users
+  - changeSet:
+      id: 1749982492535-7
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: trip_id
+            baseTableName: users_trips
+            constraintName: fk_usetri_on_trip
+            referencedColumnNames: id
+            referencedTableName: trips
+  - changeSet:
+      id: 1749982492535-8
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: users_trips
+            constraintName: fk_usetri_on_user
+            referencedColumnNames: id
+            referencedTableName: users
+
