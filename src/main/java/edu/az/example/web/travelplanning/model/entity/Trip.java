@@ -29,7 +29,7 @@ public class Trip {
     private LocalDate departureTime;
     @Column(nullable = false)
     private LocalDate arrivalTime;
-
+    @Column(nullable = false)
     private String description;
 
     @ManyToMany(mappedBy = "trips")

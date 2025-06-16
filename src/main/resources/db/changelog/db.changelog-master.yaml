@@ -1,0 +1,7 @@
+databaseChangeLog:
+
+  - include:
+      file: db/changelog/logs/15-01-changelog.yaml
+      context: Created db
+  - include:
+      file: db/changelog/logs/15-02-changelog.yaml
