@@ -4,6 +4,7 @@ package edu.az.example.web.travelplanning.controller;
 import edu.az.example.web.travelplanning.enums.AddressType;
 import edu.az.example.web.travelplanning.model.dto.AddressDto;
 import edu.az.example.web.travelplanning.service.AddressService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,20 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/addresses")
 public class AddressController {
     private final AddressService addressService;
-
-    public AddressController(AddressService addressService) {
-        this.addressService = addressService;
-    }
 
     @GetMapping
     public ResponseEntity<List<AddressDto>> getAddresses() {
         return ResponseEntity.ok(addressService.findAll());
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<AddressDto> getAddress(@PathVariable Long id) {
         return ResponseEntity.ok(addressService.findById(id));
     }
@@ -44,6 +42,12 @@ public class AddressController {
         return ResponseEntity.ok(addressService.findAllByStreet(street, number));
     }
 
+    @GetMapping("/userId/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AddressDto> getAddressesByUserId(@PathVariable Long id) {
+        return addressService.findAddressesByUserId(id);
+    }
+
     @PostMapping
     public ResponseEntity<AddressDto> createAddress(@RequestBody AddressDto addressDto) {
         return new ResponseEntity<>(addressService.create(addressDto), HttpStatus.CREATED);
@@ -54,7 +58,7 @@ public class AddressController {
         return new ResponseEntity<>(addressService.update(addressDto, id), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAddress(@PathVariable Long id) {
         addressService.deleteById(id);

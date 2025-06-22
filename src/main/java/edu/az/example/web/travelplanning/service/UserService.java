@@ -1,5 +1,6 @@
 package edu.az.example.web.travelplanning.service;
 
+import edu.az.example.web.travelplanning.enums.Gender;
 import edu.az.example.web.travelplanning.model.dto.AddressDto;
 import edu.az.example.web.travelplanning.model.dto.UserDto;
 import edu.az.example.web.travelplanning.model.entity.Address;
@@ -10,25 +11,17 @@ import edu.az.example.web.travelplanning.repository.AddressRepository;
 import edu.az.example.web.travelplanning.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Transactional(Transactional.TxType.REQUIRED)
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final AddressMapper addressMapper;
-    private final AddressRepository addressRepository;
-
-    public UserService(UserRepository userRepository, UserMapper userMapper,
-                       AddressMapper addressMapper, AddressRepository addressRepository) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.addressMapper = addressMapper;
-        this.addressRepository = addressRepository;
-    }
 
     public List<UserDto> findAll() {
         return userRepository.findAll()
@@ -36,6 +29,7 @@ public class UserService {
                 .map(userMapper::toUserDto)
                 .toList();
     }
+
     public UserDto findById(Long id) {
         return userRepository.findById(id)
                 .map(userMapper::toUserDto)
@@ -56,41 +50,41 @@ public class UserService {
                 .toList();
     }
 
-    public List<UserDto> findByGender(String gender) {
+    public List<UserDto> findByGender(Gender gender) {
         return userRepository.findAllByGender(gender)
                 .stream()
                 .map(userMapper::toUserDto)
                 .toList();
     }
 
-    public List<AddressDto> findAddressesByUserId(Long userId) {
-        List<Address> addresses = addressRepository.findAllByUserId(userId);
-        return addresses.stream()
-                .map(addressMapper::toAddressDto)
-                .toList();
-    }
 
     public UserDto create(UserDto userDto) {
-        User user = userMapper.toUser(userDto);
-        if (user.getAddresses() != null) {
-            for (var address : user.getAddresses()) {
-                address.setUser(user);
-            }
+        if (userDto == null) {
+            throw new IllegalArgumentException();
         }
-
+        User user = userMapper.toUser(userDto);
         User savedUser = userRepository.save(user);
         return userMapper.toUserDto(savedUser);
     }
 
-    public UserDto update(Long id,UserDto userDto) {
+    public UserDto update(Long id, UserDto userDto) {
+        if (id == null || userDto == null) {
+            throw new IllegalArgumentException();
+        }
         User user = userRepository.findById(id).
                 orElseThrow(EntityNotFoundException::new);
-        userMapper.toUserEntity(user,userDto);
+        userMapper.toUserEntity(user, userDto);
         userRepository.save(user);
         return userMapper.toUserDto(user);
     }
 
     public void delete(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
+        if (!userRepository.existsById(id)) {
+            throw new EntityNotFoundException();
+        }
         userRepository.deleteById(id);
     }
 

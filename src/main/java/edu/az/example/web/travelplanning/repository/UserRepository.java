@@ -1,6 +1,7 @@
 package edu.az.example.web.travelplanning.repository;
 
 
+import edu.az.example.web.travelplanning.enums.Gender;
 import edu.az.example.web.travelplanning.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +21,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     List<User> findAllByAge(Integer age);
 
 
-    @Query("select u from User u where lower(u.gender) = lower(?1)")
-    List<User> findAllByGender(String gender);
+    @Query("select u from User u where u.gender = ?1")
+    List<User> findAllByGender(Gender gender);
 }

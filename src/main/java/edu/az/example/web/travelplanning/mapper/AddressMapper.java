@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring",uses = {TripMapper.class})
 public interface AddressMapper {
 
@@ -24,5 +26,7 @@ public interface AddressMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "addressType", source = "type")
     void toAddressEntity(@MappingTarget Address address, AddressDto addressDto);
+
+    List<AddressDto> toDtoList(List<Address> addresses);
 }
 

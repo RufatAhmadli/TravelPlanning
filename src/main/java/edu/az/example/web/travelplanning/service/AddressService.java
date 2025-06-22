@@ -8,20 +8,17 @@ import edu.az.example.web.travelplanning.repository.AddressRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class AddressService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
-
-    public AddressService(AddressRepository addressRepository, AddressMapper addressMapper) {
-        this.addressRepository = addressRepository;
-        this.addressMapper = addressMapper;
-    }
 
     public List<AddressDto> findAll() {
         return addressRepository.findAll()
@@ -52,6 +49,13 @@ public class AddressService {
     public List<AddressDto> findAllByStreet(String street, String streetNumber) {
         return addressRepository.findAllByStreet(street, streetNumber)
                 .stream()
+                .map(addressMapper::toAddressDto)
+                .toList();
+    }
+
+    public List<AddressDto> findAddressesByUserId(Long userId) {
+        List<Address> addresses = addressRepository.findAllByUserId(userId);
+        return addresses.stream()
                 .map(addressMapper::toAddressDto)
                 .toList();
     }

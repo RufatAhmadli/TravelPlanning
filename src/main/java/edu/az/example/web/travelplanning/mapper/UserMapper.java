@@ -1,10 +1,11 @@
 package edu.az.example.web.travelplanning.mapper;
 import edu.az.example.web.travelplanning.model.dto.UserDto;
+import edu.az.example.web.travelplanning.model.entity.Address;
+import edu.az.example.web.travelplanning.model.entity.Trip;
 import edu.az.example.web.travelplanning.model.entity.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
+
+import java.util.ArrayList;
 
 @Mapper(uses = {TripMapper.class,AddressMapper.class})
 public interface UserMapper {
@@ -20,4 +21,14 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", source = "firstName")
     void toUserEntity(@MappingTarget User user, UserDto userDto);
+
+
+    @AfterMapping
+    default void linkAddresses(@MappingTarget User user) {
+        if (user.getAddresses() != null) {
+            for (Address address : user.getAddresses()) {
+                address.setUser(user);
+            }
+        }
+    }
 }

@@ -18,8 +18,8 @@ public interface TripMapper {
 
     @Named("userWithoutTripsAndAddresses")
     @Mapping(target = "firstName",source = "name")
-    @Mapping(target = "trips", ignore = true)
-    @Mapping(target = "addresses", ignore = true)
+    @Mapping(target = "trips",ignore = true)
+    @Mapping(target = "addresses",ignore = true)
     UserDto userWithoutTrips(User user);
 
     @Mapping(target = "users", ignore = true)

@@ -44,12 +44,12 @@ public class TripController {
         return tripService.create(tripDto);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public TripDto updateTrip(@PathVariable Long id, @RequestBody TripDto tripDto){
         return tripService.update(tripDto, id);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deleteTrip(@PathVariable Long id){
         tripService.delete(id);
     }

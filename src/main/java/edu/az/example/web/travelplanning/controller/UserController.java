@@ -1,10 +1,12 @@
 package edu.az.example.web.travelplanning.controller;
 
+import edu.az.example.web.travelplanning.enums.Gender;
 import edu.az.example.web.travelplanning.model.dto.AddressDto;
 import edu.az.example.web.travelplanning.validation.OnCreate;
 import edu.az.example.web.travelplanning.model.dto.UserDto;
 import edu.az.example.web.travelplanning.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-    UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -26,16 +25,10 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDto getById(@PathVariable Long id) {
         return userService.findById(id);
-    }
-
-    @GetMapping("/addresses/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<AddressDto> getAddressesByUserId(@PathVariable Long id) {
-        return userService.findAddressesByUserId(id);
     }
 
     @GetMapping("/name/{name}")
@@ -52,7 +45,7 @@ public class UserController {
 
     @GetMapping("/gender")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> getByGender(@RequestParam String gender) {
+    public List<UserDto> getByGender(@RequestParam Gender gender) {
         return userService.findByGender(gender);
     }
 

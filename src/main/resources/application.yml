@@ -1,4 +1,7 @@
 spring:
+  config:
+    activate:
+      on-profile: "!test"
   datasource:
     url: ${JDBC_URL}
     username: ${JDBC_USERNAME}
