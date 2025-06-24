@@ -14,7 +14,7 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     List<Trip> findAllByDepartureTime(LocalDate departureTime);
 
     @Query(value = """
-    SELECT t FROM trips t
+    SELECT t.* FROM trips t
     JOIN users_trips ut ON ut.trip_id = t.id
     WHERE ut.user_id = ?1
     """, nativeQuery = true)

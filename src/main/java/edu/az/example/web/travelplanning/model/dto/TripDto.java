@@ -2,14 +2,16 @@ package edu.az.example.web.travelplanning.model.dto;
 
 import edu.az.example.web.travelplanning.validation.OnCreate;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TripDto {
     @Null(groups = OnCreate.class)
     private Long id;

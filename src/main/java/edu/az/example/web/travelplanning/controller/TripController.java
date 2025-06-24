@@ -46,7 +46,7 @@ public class TripController {
 
     @PutMapping("/{id}")
     public TripDto updateTrip(@PathVariable Long id, @RequestBody TripDto tripDto){
-        return tripService.update(tripDto, id);
+        return tripService.update(id, tripDto);
     }
 
     @DeleteMapping("/{id}")

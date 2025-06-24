@@ -52,18 +52,30 @@ public class TripService {
     }
 
     public TripDto create(TripDto tripDto) {
+        if (tripDto == null) {
+            throw new IllegalArgumentException();
+        }
         Trip trip = tripMapper.toTrip(tripDto);
         tripRepository.save(trip);
         return tripMapper.toTripDto(trip);
     }
 
-    public TripDto update(TripDto tripDto, Long id) {
+    public TripDto update(Long id, TripDto tripDto) {
+        if (tripDto == null || id == null) {
+            throw new IllegalArgumentException();
+        }
         Trip trip = tripRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         tripMapper.toTripEntity(trip, tripDto);
         return tripMapper.toTripDto(tripRepository.save(trip));
     }
 
     public void delete(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
+        if (!tripRepository.existsById(id)) {
+            throw new EntityNotFoundException();
+        }
         tripRepository.deleteById(id);
     }
 }

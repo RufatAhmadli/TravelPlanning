@@ -167,14 +167,14 @@ class AddressServiceTest {
     @Test
     void testCreateNullDto() {
         assertThrows(IllegalArgumentException.class, () -> addressService.create(null));
-        verify(addressRepository, never()).deleteById(1L);
+        verify(addressRepository, never()).save(any(Address.class));
     }
 
     @Test
     void testUpdate() {
         when(addressRepository.findById(1L)).thenReturn(java.util.Optional.of(address));
         when(addressMapper.toAddressDto(address)).thenReturn(updatedDto);
-        doNothing().when(addressMapper).toAddressEntity(address,addressDto);
+        doNothing().when(addressMapper).toAddressEntity(address, addressDto);
         when(addressRepository.save(address)).thenReturn(address);
 
         AddressDto res = addressService.update(1L, addressDto);
@@ -186,14 +186,14 @@ class AddressServiceTest {
 
     @Test
     void testUpdateNullId() {
-        assertThrows(IllegalArgumentException.class, () -> addressService.update(null,addressDto));
+        assertThrows(IllegalArgumentException.class, () -> addressService.update(null, addressDto));
         verifyNoInteractions(addressRepository);
 
     }
 
     @Test
     void testUpdateNullDto() {
-        assertThrows(IllegalArgumentException.class, ()->addressService.update(1L,null));
+        assertThrows(IllegalArgumentException.class, () -> addressService.update(1L, null));
         verifyNoInteractions(addressRepository);
     }
 
@@ -201,7 +201,7 @@ class AddressServiceTest {
     void testUpdateNonExistentDto() {
         when(addressRepository.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, ()->addressService.update(1L,addressDto));
+        assertThrows(EntityNotFoundException.class, () -> addressService.update(1L, addressDto));
         verify(addressRepository, never()).save(any(Address.class));
     }
 
