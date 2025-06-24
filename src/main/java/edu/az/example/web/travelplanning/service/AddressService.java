@@ -61,11 +61,15 @@ public class AddressService {
     }
 
     public AddressDto create(AddressDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException();
+        }
         Address savedAddress = addressRepository.save(addressMapper.toAddress(dto));
         return addressMapper.toAddressDto(savedAddress);
     }
 
-    public AddressDto update(AddressDto dto, Long id) {
+    public AddressDto update(Long id, AddressDto dto) {
+        if (id == null || dto == null) throw new IllegalArgumentException();
         Address address = addressRepository.findById(id).
                 orElseThrow(EntityNotFoundException::new);
         addressMapper.toAddressEntity(address, dto);
@@ -74,6 +78,12 @@ public class AddressService {
     }
 
     public void deleteById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
+        if (!addressRepository.existsById(id)) {
+            throw new EntityNotFoundException();
+        }
         addressRepository.deleteById(id);
     }
 
