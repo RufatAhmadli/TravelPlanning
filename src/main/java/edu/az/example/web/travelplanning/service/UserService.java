@@ -1,13 +1,10 @@
 package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.enums.Gender;
-import edu.az.example.web.travelplanning.model.dto.AddressDto;
 import edu.az.example.web.travelplanning.model.dto.UserDto;
-import edu.az.example.web.travelplanning.model.entity.Address;
+import edu.az.example.web.travelplanning.model.dto.UserPatchDto;
 import edu.az.example.web.travelplanning.model.entity.User;
-import edu.az.example.web.travelplanning.mapper.AddressMapper;
 import edu.az.example.web.travelplanning.mapper.UserMapper;
-import edu.az.example.web.travelplanning.repository.AddressRepository;
 import edu.az.example.web.travelplanning.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -76,6 +73,17 @@ public class UserService {
         userMapper.toUserEntity(user, userDto);
         userRepository.save(user);
         return userMapper.toUserDto(user);
+    }
+
+    public UserDto partialUpdate(Long id, UserPatchDto userDto) {
+        if (id == null || userDto == null) {
+            throw new IllegalArgumentException();
+        }
+        User user = userRepository.findById(id).
+                orElseThrow(EntityNotFoundException::new);
+
+        userMapper.applyPatch(user, userDto);
+        return userMapper.toUserDto(userRepository.save(user));
     }
 
     public void delete(Long id) {
