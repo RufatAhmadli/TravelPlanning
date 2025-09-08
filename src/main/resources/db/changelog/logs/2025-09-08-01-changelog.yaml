@@ -1,0 +1,60 @@
+databaseChangeLog:
+  # --- Create Roles table ---
+  - changeSet:
+      id: 1757353130629-1
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_roles
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+  # --- Add unique constraint to role name ---
+  - changeSet:
+      id: 1757353130629-3
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            tableName: roles
+            columnNames: name
+            constraintName: uc_roles_name
+
+  # --- Add role_id column to users ---
+  - changeSet:
+      id: 1757353130629-4
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: role_id
+                  type: BIGINT
+
+  # --- Add foreign key from users.role_id to roles.id ---
+  - changeSet:
+      id: 1757353130629-2
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: role_id
+            referencedTableName: roles
+            referencedColumnNames: id
+            constraintName: FK_USERS_ON_ROLE

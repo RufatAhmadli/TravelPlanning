@@ -5,3 +5,5 @@ databaseChangeLog:
       context: Created db
   - include:
       file: db/changelog/logs/15-02-changelog.yaml
+  - include:
+      file: db/changelog/logs/2025-09-08-01-changelog.yaml

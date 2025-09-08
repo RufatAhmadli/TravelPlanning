@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -48,10 +49,15 @@ public class User {
     )
     private List<Trip> trips;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role role;
+
     public void addTrip(Trip trip) {
         trips.add(trip);
         trip.getUsers().add(this);
     }
+
     public void removeTrip(Trip trip) {
         trips.remove(trip);
         trip.getUsers().remove(this);
