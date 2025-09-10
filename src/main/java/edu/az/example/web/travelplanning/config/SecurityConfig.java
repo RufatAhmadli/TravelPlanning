@@ -1,16 +1,12 @@
 package edu.az.example.web.travelplanning.config;
 
-import edu.az.example.web.travelplanning.enums.Gender;
 import edu.az.example.web.travelplanning.service.CustomUserDetailsService;
-import edu.az.example.web.travelplanning.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -46,11 +42,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(conf -> conf
-                .requestMatchers(AUTHENTICATE, REGISTER).permitAll()
-                .anyRequest()
-                .authenticated()
-        );
-        http.httpBasic(Customizer.withDefaults())
+                        .requestMatchers(AUTHENTICATE, REGISTER).permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
