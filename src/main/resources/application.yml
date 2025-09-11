@@ -1,4 +1,8 @@
 spring:
+  security:
+    user:
+      password: Messi2025!
+      name: Rufat
   config:
     activate:
       on-profile: "!test"
