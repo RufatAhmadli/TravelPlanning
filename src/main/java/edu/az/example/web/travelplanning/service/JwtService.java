@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private final String SECRET_KEY = "bC6hOCv7SZEbNmvFqlP9+jPdeuvztv2mx3Aw77Zk2mY=";
+    private static final String SECRET_KEY = "bC6hOCv7SZEbNmvFqlP9+jPdeuvztv2mx3Aw77Zk2mY=";
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>(); // for adding custom data into payload
