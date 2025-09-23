@@ -8,14 +8,17 @@ import org.mapstruct.*;
 
 @Mapper(uses = {TripMapper.class,AddressMapper.class})
 public interface UserMapper {
+    @Mapping(target = "confirmPassword", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "firstName", source = "name")
     UserDto toUserDto(User user);
 
+    @Mapping(target = "role", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", source = "firstName")
     User toUser(UserDto userDto);
 
+    @Mapping(target = "role", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", source = "firstName")
