@@ -1,6 +1,7 @@
 package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.exception.ConfirmPasswordException;
+import edu.az.example.web.travelplanning.exception.EmailAlreadyExistsException;
 import edu.az.example.web.travelplanning.mapper.UserMapper;
 import edu.az.example.web.travelplanning.model.dto.AuthRequest;
 import edu.az.example.web.travelplanning.model.dto.AuthResponse;
@@ -29,23 +30,37 @@ public class AuthService {
         try {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     authRequest.getUsername(), authRequest.getPassword());
-            Authentication authentication = authenticationManager.authenticate(token);
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String jwt = jwtService.generateToken(userDetails);
+            String jwt = getJwt(token);
             return new AuthResponse(jwt, "Authenticated");
         } catch (Exception ex) {
             throw new IllegalStateException(ex.getMessage(), ex);
         }
     }
 
-    public UserDto register(UserDto userDto) {
+    public AuthResponse register(UserDto userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            throw new EmailAlreadyExistsException();
+        }
         User user = userMapper.toUser(userDto);
         if (userDto.getConfirmPassword().equals(userDto.getPassword())) {
             user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
             user.setRole(new Role(2L, "USER"));
-            return userMapper.toUserDto(userRepository.save(user));
+            userRepository.save(user);
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                    userDto.getEmail(), userDto.getPassword()
+            );
+            String jwt = getJwt(token);
+            return new AuthResponse(jwt, "Registered");
         } else {
             throw new ConfirmPasswordException();
         }
     }
+
+    private String getJwt(UsernamePasswordAuthenticationToken token) {
+        Authentication authentication = authenticationManager.authenticate(token);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return jwtService.generateToken(userDetails);
+    }
+
+
 }

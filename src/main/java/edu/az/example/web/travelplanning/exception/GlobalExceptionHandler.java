@@ -20,8 +20,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<?> handleValidationException(ValidationException e, HttpServletRequest request) {
+    @ExceptionHandler({ValidationException.class,
+            EmailAlreadyExistsException.class,
+            ConfirmPasswordException.class})
+    public ResponseEntity<?> handleValidationException(Exception e, HttpServletRequest request) {
         Map<String, Object> error = new HashMap<>();
         buildResponse(error, e.getMessage(), HttpStatus.BAD_REQUEST, request);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
