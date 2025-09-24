@@ -5,9 +5,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +24,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ValidationException.class,
             EmailAlreadyExistsException.class,
-            ConfirmPasswordException.class})
+            ConfirmPasswordException.class,
+            RoleNotFoundException.class,
+            MethodArgumentNotValidException.class,}
+    )
     public ResponseEntity<?> handleValidationException(Exception e, HttpServletRequest request) {
         Map<String, Object> error = new HashMap<>();
         buildResponse(error, e.getMessage(), HttpStatus.BAD_REQUEST, request);
