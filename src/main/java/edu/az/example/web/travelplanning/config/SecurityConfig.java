@@ -21,8 +21,8 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthEntryPoint authEntryPoint;
-    private static final String REGISTER = "api/v1/register";
-    private static final String AUTHENTICATE = "api/v1/authenticate";
+    private static final String REGISTER = "api/v1/auth/register";
+    private static final String LOGIN = "api/v1/auth/login";
 //    @Bean
 //    public InMemoryUserDetailsManager userDetailsManager() {
 //        UserDetails user = User.builder()
@@ -43,7 +43,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(conf -> conf
-                        .requestMatchers(AUTHENTICATE, REGISTER).permitAll()
+                        .requestMatchers(LOGIN, REGISTER).permitAll()
                         .anyRequest()
                         .authenticated()
                 )

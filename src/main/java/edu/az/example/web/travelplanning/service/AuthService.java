@@ -8,6 +8,7 @@ import edu.az.example.web.travelplanning.model.dto.AuthResponse;
 import edu.az.example.web.travelplanning.model.dto.UserDto;
 import edu.az.example.web.travelplanning.model.entity.Role;
 import edu.az.example.web.travelplanning.model.entity.User;
+import edu.az.example.web.travelplanning.repository.RoleRepository;
 import edu.az.example.web.travelplanning.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import edu.az.example.web.travelplanning.exception.RoleNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RoleRepository roleRepository;
 
     public AuthResponse authenticate(AuthRequest authRequest) {
         try {
@@ -44,7 +47,10 @@ public class AuthService {
         User user = userMapper.toUser(userDto);
         if (userDto.getConfirmPassword().equals(userDto.getPassword())) {
             user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
-            user.setRole(new Role(2L, "USER"));
+            Role userRole = roleRepository.findByName("USER")
+                    .orElseThrow(() -> new RoleNotFoundException("Default role USER not found"));
+            user.setRole(userRole);
+
             userRepository.save(user);
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     userDto.getEmail(), userDto.getPassword()
