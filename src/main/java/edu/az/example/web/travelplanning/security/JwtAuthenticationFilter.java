@@ -1,4 +1,4 @@
-package edu.az.example.web.travelplanning.config;
+package edu.az.example.web.travelplanning.security;
 
 import edu.az.example.web.travelplanning.service.CustomUserDetailsService;
 import edu.az.example.web.travelplanning.service.JwtService;

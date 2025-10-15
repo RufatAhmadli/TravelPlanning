@@ -1,5 +1,7 @@
 package edu.az.example.web.travelplanning.config;
 
+import edu.az.example.web.travelplanning.security.AuthEntryPoint;
+import edu.az.example.web.travelplanning.security.JwtAuthenticationFilter;
 import edu.az.example.web.travelplanning.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthEntryPoint authEntryPoint;
