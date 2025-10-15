@@ -1,5 +1,6 @@
 package edu.az.example.web.travelplanning.config;
 
+import edu.az.example.web.travelplanning.exception.CustomAccessDeniedHandler;
 import edu.az.example.web.travelplanning.security.AuthEntryPoint;
 import edu.az.example.web.travelplanning.security.JwtAuthenticationFilter;
 import edu.az.example.web.travelplanning.service.CustomUserDetailsService;
@@ -24,6 +25,7 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthEntryPoint authEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private static final String REGISTER = "api/v1/auth/register";
     private static final String LOGIN = "api/v1/auth/login";
 //    @Bean
@@ -44,14 +46,15 @@ public class SecurityConfig {
 //    }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomAccessDeniedHandler customAccessDeniedHandler) throws Exception {
         http.authorizeHttpRequests(conf -> conf
                         .requestMatchers(LOGIN, REGISTER).permitAll()
                         .anyRequest()
                         .authenticated()
                 )
-                .exceptionHandling(exception ->
-                        exception.authenticationEntryPoint(authEntryPoint))
+                .exceptionHandling(exceptions ->
+                        exceptions.authenticationEntryPoint(authEntryPoint)
+                                .accessDeniedHandler(customAccessDeniedHandler))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
