@@ -15,8 +15,8 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e, HttpServletRequest request) {
+    @ExceptionHandler(AddressNotFoundException.class)
+    public ResponseEntity<?> handleEntityNotFoundException(Exception e, HttpServletRequest request) {
         Map<String, Object> error = new HashMap<>();
         buildResponse(error, e.getMessage(), HttpStatus.NOT_FOUND, request);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
@@ -32,6 +32,13 @@ public class GlobalExceptionHandler {
         Map<String, Object> error = new HashMap<>();
         buildResponse(error, e.getMessage(), HttpStatus.BAD_REQUEST, request);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<?> handleSecurityException(SecurityException e, HttpServletRequest request) {
+        Map<String, Object> error = new HashMap<>();
+        buildResponse(error, e.getMessage(), HttpStatus.UNAUTHORIZED, request);
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
     public void buildResponse(Map<String, Object> error, String message, HttpStatus status, HttpServletRequest request) {
