@@ -1,8 +1,8 @@
 package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.mapper.UserMapper;
-import edu.az.example.web.travelplanning.model.dto.AddressDto;
-import edu.az.example.web.travelplanning.model.dto.UserDto;
+import edu.az.example.web.travelplanning.dto.AddressDto;
+import edu.az.example.web.travelplanning.dto.UserDto;
 import edu.az.example.web.travelplanning.model.entity.Address;
 import edu.az.example.web.travelplanning.model.entity.User;
 import edu.az.example.web.travelplanning.repository.UserRepository;
@@ -137,7 +137,7 @@ class UserServiceTest {
 
     @Test
     void testCreate() {
-        when(userMapper.toUser(userDto)).thenReturn(user);
+        when(userMapper.toUserEntity(userDto)).thenReturn(user);
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.toUserDto(user)).thenReturn(userDto);
 
@@ -150,7 +150,7 @@ class UserServiceTest {
         assertEquals(expected.getAge(), result.getAge());
 
         verify(userMapper, times(1)).toUserDto(user);
-        verify(userMapper, times(1)).toUser(userDto);
+        verify(userMapper, times(1)).toUserEntity(userDto);
         verify(userRepository, times(1)).save(user);
     }
 
@@ -164,7 +164,7 @@ class UserServiceTest {
     @Test
     void testUpdate() {
         when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(user));
-        doNothing().when(userMapper).toUserEntity(user, updatedDto);
+        doNothing().when(userMapper).updateUserEntity(user, updatedDto);
         when(userMapper.toUserDto(user)).thenReturn((updatedDto));
 
         UserDto res = userService.update(1L, updatedDto);

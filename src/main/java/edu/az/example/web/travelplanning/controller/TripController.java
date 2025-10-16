@@ -1,6 +1,6 @@
 package edu.az.example.web.travelplanning.controller;
 
-import edu.az.example.web.travelplanning.model.dto.TripDto;
+import edu.az.example.web.travelplanning.dto.TripDto;
 import edu.az.example.web.travelplanning.service.TripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

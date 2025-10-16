@@ -1,12 +1,13 @@
 package edu.az.example.web.travelplanning.mapper;
-import edu.az.example.web.travelplanning.model.dto.UserDto;
-import edu.az.example.web.travelplanning.model.dto.UserPatchDto;
+
+import edu.az.example.web.travelplanning.dto.UserDto;
+import edu.az.example.web.travelplanning.dto.UserPatchDto;
 import edu.az.example.web.travelplanning.model.entity.Address;
 import edu.az.example.web.travelplanning.model.entity.User;
 import org.mapstruct.*;
 
 
-@Mapper(uses = {TripMapper.class,AddressMapper.class})
+@Mapper(uses = {TripMapper.class, AddressMapper.class})
 public interface UserMapper {
     @Mapping(target = "confirmPassword", ignore = true)
     @Mapping(target = "password", ignore = true)
@@ -16,13 +17,13 @@ public interface UserMapper {
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", source = "firstName")
-    User toUser(UserDto userDto);
+    User toUserEntity(UserDto userDto);
 
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", source = "firstName")
-    void toUserEntity(@MappingTarget User user, UserDto userDto);
+    void updateUserEntity(@MappingTarget User user, UserDto userDto);
 
     default void applyPatch(@MappingTarget User user, UserPatchDto patchDto) {
         if (patchDto.getFirstName() != null) {

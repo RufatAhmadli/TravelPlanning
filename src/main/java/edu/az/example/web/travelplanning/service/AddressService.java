@@ -1,12 +1,11 @@
 package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.enums.AddressType;
-import edu.az.example.web.travelplanning.model.dto.AddressDto;
+import edu.az.example.web.travelplanning.dto.AddressDto;
 import edu.az.example.web.travelplanning.model.entity.Address;
 import edu.az.example.web.travelplanning.mapper.AddressMapper;
 import edu.az.example.web.travelplanning.repository.AddressRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -64,7 +63,7 @@ public class AddressService {
         if (dto == null) {
             throw new IllegalArgumentException();
         }
-        Address savedAddress = addressRepository.save(addressMapper.toAddress(dto));
+        Address savedAddress = addressRepository.save(addressMapper.toAddressEntity(dto));
         return addressMapper.toAddressDto(savedAddress);
     }
 
@@ -72,7 +71,7 @@ public class AddressService {
         if (id == null || dto == null) throw new IllegalArgumentException();
         Address address = addressRepository.findById(id).
                 orElseThrow(EntityNotFoundException::new);
-        addressMapper.toAddressEntity(address, dto);
+        addressMapper.updateAddressEntity(address, dto);
         addressRepository.save(address);
         return addressMapper.toAddressDto(address);
     }

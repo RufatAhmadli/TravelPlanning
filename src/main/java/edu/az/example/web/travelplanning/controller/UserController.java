@@ -1,9 +1,9 @@
 package edu.az.example.web.travelplanning.controller;
 
 import edu.az.example.web.travelplanning.enums.Gender;
-import edu.az.example.web.travelplanning.model.dto.UserPatchDto;
+import edu.az.example.web.travelplanning.dto.UserPatchDto;
 import edu.az.example.web.travelplanning.validation.OnCreate;
-import edu.az.example.web.travelplanning.model.dto.UserDto;
+import edu.az.example.web.travelplanning.dto.UserDto;
 import edu.az.example.web.travelplanning.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

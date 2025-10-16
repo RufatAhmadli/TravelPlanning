@@ -1,13 +1,11 @@
 package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.mapper.AddressMapper;
-import edu.az.example.web.travelplanning.model.dto.AddressDto;
+import edu.az.example.web.travelplanning.dto.AddressDto;
 import edu.az.example.web.travelplanning.model.entity.Address;
 import edu.az.example.web.travelplanning.repository.AddressRepository;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -150,7 +148,7 @@ class AddressServiceTest {
     void testCreate() {
         when(addressMapper.toAddressDto(address)).thenReturn(addressDto);
         when(addressRepository.save(address)).thenReturn(address);
-        when(addressMapper.toAddress(addressDto)).thenReturn(address);
+        when(addressMapper.toAddressEntity(addressDto)).thenReturn(address);
 
         AddressDto res = addressService.create(addressDto);
         ArgumentCaptor<Address> captor = ArgumentCaptor.forClass(Address.class);
@@ -174,7 +172,7 @@ class AddressServiceTest {
     void testUpdate() {
         when(addressRepository.findById(1L)).thenReturn(java.util.Optional.of(address));
         when(addressMapper.toAddressDto(address)).thenReturn(updatedDto);
-        doNothing().when(addressMapper).toAddressEntity(address, addressDto);
+        doNothing().when(addressMapper).updateAddressEntity(address, addressDto);
         when(addressRepository.save(address)).thenReturn(address);
 
         AddressDto res = addressService.update(1L, addressDto);

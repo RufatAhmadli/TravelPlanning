@@ -21,13 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthEntryPoint authEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
-    private static final String REGISTER = "api/v1/auth/register";
-    private static final String LOGIN = "api/v1/auth/login";
+    private static final String REGISTER = "api/v1/register";
+    private static final String AUTHENTICATE = "api/v1/authenticate";
 //    @Bean
 //    public InMemoryUserDetailsManager userDetailsManager() {
 //        UserDetails user = User.builder()
@@ -46,15 +45,17 @@ public class SecurityConfig {
 //    }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CustomAccessDeniedHandler customAccessDeniedHandler) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(conf -> conf
-                        .requestMatchers(LOGIN, REGISTER).permitAll()
+                        .requestMatchers(AUTHENTICATE, REGISTER,
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**").permitAll()
                         .anyRequest()
                         .authenticated()
                 )
-                .exceptionHandling(exceptions ->
-                        exceptions.authenticationEntryPoint(authEntryPoint)
-                                .accessDeniedHandler(customAccessDeniedHandler))
+                .exceptionHandling(exception ->
+                        exception.authenticationEntryPoint(authEntryPoint).
+                                accessDeniedHandler(customAccessDeniedHandler))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->

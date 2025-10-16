@@ -1,4 +1,4 @@
-package edu.az.example.web.travelplanning.model.dto;
+package edu.az.example.web.travelplanning.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.az.example.web.travelplanning.enums.Gender;

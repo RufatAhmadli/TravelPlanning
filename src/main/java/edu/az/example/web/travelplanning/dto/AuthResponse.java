@@ -1,4 +1,4 @@
-package edu.az.example.web.travelplanning.model.dto;
+package edu.az.example.web.travelplanning.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

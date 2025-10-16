@@ -1,13 +1,11 @@
 package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.mapper.TripMapper;
-import edu.az.example.web.travelplanning.model.dto.TripDto;
-import edu.az.example.web.travelplanning.model.entity.Address;
+import edu.az.example.web.travelplanning.dto.TripDto;
 import edu.az.example.web.travelplanning.model.entity.Trip;
 import edu.az.example.web.travelplanning.repository.TripRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -135,7 +133,7 @@ class TripServiceTest {
     void testCreate() {
         when(tripRepository.save(trip)).thenReturn(trip);
         when(tripMapper.toTripDto(trip)).thenReturn(tripDto);
-        when(tripMapper.toTrip(tripDto)).thenReturn(trip);
+        when(tripMapper.toTripEntity(tripDto)).thenReturn(trip);
 
         TripDto res = tripService.create(tripDto);
         ArgumentCaptor<Trip> captor = ArgumentCaptor.forClass(Trip.class);
@@ -158,7 +156,7 @@ class TripServiceTest {
     @Test
     void testUpdate() {
         when(tripRepository.findById(1L)).thenReturn(java.util.Optional.of(trip));
-        doNothing().when(tripMapper).toTripEntity(trip, tripDto);
+        doNothing().when(tripMapper).updateTripEntity(trip, tripDto);
         when(tripMapper.toTripDto(trip)).thenReturn(updatedDto);
         when(tripRepository.save(trip)).thenReturn(trip);
 

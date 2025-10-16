@@ -1,17 +1,19 @@
-package edu.az.example.web.travelplanning.model.dto;
+package edu.az.example.web.travelplanning.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.az.example.web.travelplanning.validation.OnCreate;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TripDto {
     @Null(groups = OnCreate.class)
     private Long id;
@@ -32,15 +34,5 @@ public class TripDto {
     private LocalDate arrivalTime;
 
     private String description;
-    private List<UserDto> users;
-
-    @AssertTrue(message = "Arrival time must be after departure time")
-    public boolean isArrivalAfterDeparture() {
-        if (arrivalTime == null || departureTime == null) {
-            return true;
-        }
-        return arrivalTime.isAfter(departureTime);
-    }
-
 
 }
