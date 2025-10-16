@@ -2,7 +2,7 @@ package edu.az.example.web.travelplanning.controller;
 
 
 import edu.az.example.web.travelplanning.enums.AddressType;
-import edu.az.example.web.travelplanning.model.dto.AddressDto;
+import edu.az.example.web.travelplanning.dto.AddressDto;
 import edu.az.example.web.travelplanning.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

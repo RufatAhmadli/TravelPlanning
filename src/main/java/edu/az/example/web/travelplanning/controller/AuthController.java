@@ -1,7 +1,7 @@
 package edu.az.example.web.travelplanning.controller;
 
-import edu.az.example.web.travelplanning.model.dto.AuthRequest;
-import edu.az.example.web.travelplanning.model.dto.AuthResponse;
+import edu.az.example.web.travelplanning.dto.AuthRequest;
+import edu.az.example.web.travelplanning.dto.AuthResponse;
 import edu.az.example.web.travelplanning.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

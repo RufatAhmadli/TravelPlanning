@@ -1,7 +1,7 @@
 package edu.az.example.web.travelplanning.service;
 
-import edu.az.example.web.travelplanning.model.dto.AuthRequest;
-import edu.az.example.web.travelplanning.model.dto.AuthResponse;
+import edu.az.example.web.travelplanning.dto.AuthRequest;
+import edu.az.example.web.travelplanning.dto.AuthResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

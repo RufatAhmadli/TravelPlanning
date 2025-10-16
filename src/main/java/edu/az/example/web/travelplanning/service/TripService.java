@@ -1,7 +1,7 @@
 package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.mapper.TripMapper;
-import edu.az.example.web.travelplanning.model.dto.TripDto;
+import edu.az.example.web.travelplanning.dto.TripDto;
 import edu.az.example.web.travelplanning.model.entity.Trip;
 import edu.az.example.web.travelplanning.repository.TripRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -55,7 +55,7 @@ public class TripService {
         if (tripDto == null) {
             throw new IllegalArgumentException();
         }
-        Trip trip = tripMapper.toTrip(tripDto);
+        Trip trip = tripMapper.toTripEntity(tripDto);
         tripRepository.save(trip);
         return tripMapper.toTripDto(trip);
     }
@@ -65,7 +65,7 @@ public class TripService {
             throw new IllegalArgumentException();
         }
         Trip trip = tripRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        tripMapper.toTripEntity(trip, tripDto);
+        tripMapper.updateTripEntity(trip, tripDto);
         return tripMapper.toTripDto(tripRepository.save(trip));
     }
 

@@ -1,8 +1,8 @@
 package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.enums.Gender;
-import edu.az.example.web.travelplanning.model.dto.UserDto;
-import edu.az.example.web.travelplanning.model.dto.UserPatchDto;
+import edu.az.example.web.travelplanning.dto.UserDto;
+import edu.az.example.web.travelplanning.dto.UserPatchDto;
 import edu.az.example.web.travelplanning.model.entity.User;
 import edu.az.example.web.travelplanning.mapper.UserMapper;
 import edu.az.example.web.travelplanning.repository.UserRepository;
@@ -59,7 +59,7 @@ public class UserService {
         if (userDto == null) {
             throw new IllegalArgumentException();
         }
-        User user = userMapper.toUser(userDto);
+        User user = userMapper.toUserEntity(userDto);
         User savedUser = userRepository.save(user);
         return userMapper.toUserDto(savedUser);
     }
@@ -70,7 +70,7 @@ public class UserService {
         }
         User user = userRepository.findById(id).
                 orElseThrow(EntityNotFoundException::new);
-        userMapper.toUserEntity(user, userDto);
+        userMapper.updateUserEntity(user, userDto);
         userRepository.save(user);
         return userMapper.toUserDto(user);
     }
