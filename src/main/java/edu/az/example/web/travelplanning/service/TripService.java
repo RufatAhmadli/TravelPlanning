@@ -34,7 +34,7 @@ public class TripService {
     public TripDto findById(Long id) {
         Trip trip = tripRepository.findById(id)
                 .orElseThrow(() -> new TripNotFoundException(id));
-        if (!isUserInTrip(trip)) {
+        if (isUserNotInTrip(trip)) {
             throw new SecurityException("Cannot get trip you don't have access to");
         }
         return tripMapper.toTripDto(trip);
@@ -84,7 +84,7 @@ public class TripService {
         Trip trip = tripRepository.findById(id).
                 orElseThrow(() -> new TripNotFoundException(id));
 
-        if (!isUserInTrip(trip)) {
+        if (isUserNotInTrip(trip)) {
             throw new SecurityException("Cannot update trip you don't have access to");
         }
 
@@ -102,7 +102,7 @@ public class TripService {
                 .orElseThrow(() ->
                         new TripNotFoundException(id));
 
-        if (!isUserInTrip(trip)) {
+        if (isUserNotInTrip(trip)) {
             throw new SecurityException("Cannot delete trip you don't have access to");
         }
 
@@ -114,8 +114,8 @@ public class TripService {
         tripRepository.deleteById(id);
     }
 
-    private boolean isUserInTrip(Trip trip) {
+    private boolean isUserNotInTrip(Trip trip) {
         User currentUser = userSecurity.getCurrentUser();
-        return trip.getUsers().contains(currentUser);
+        return !trip.getUsers().contains(currentUser);
     }
 }

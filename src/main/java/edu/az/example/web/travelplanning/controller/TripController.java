@@ -3,6 +3,7 @@ package edu.az.example.web.travelplanning.controller;
 import edu.az.example.web.travelplanning.dto.TripDto;
 import edu.az.example.web.travelplanning.service.TripService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ public class TripController {
     private final TripService tripService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<TripDto> getAll() {
         return tripService.findAll();
     }
@@ -25,16 +27,19 @@ public class TripController {
     }
 
     @GetMapping("/destination/{destination}")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<TripDto> getByDestination(@PathVariable String destination) {
         return tripService.findAllByDestination(destination);
     }
 
     @GetMapping("/time/{departureTime}")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<TripDto> getByDepartureTime(@PathVariable LocalDate departureTime) {
         return tripService.findAllByDepartureTime(departureTime);
     }
 
     @GetMapping("users/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<TripDto> getByUserId(@PathVariable Long userId) {
         return tripService.findAllByUserId(userId);
     }
