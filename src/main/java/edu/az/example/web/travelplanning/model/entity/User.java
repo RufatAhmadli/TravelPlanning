@@ -40,7 +40,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "users_trips",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -53,12 +53,25 @@ public class User {
     private Role role;
 
     public void addTrip(Trip trip) {
-        trips.add(trip);
-        trip.getUsers().add(this);
+        if (trip != null) {
+            this.trips.add(trip);
+        }
     }
 
     public void removeTrip(Trip trip) {
-        trips.remove(trip);
-        trip.getUsers().remove(this);
+        if (trip != null) {
+            this.trips.remove(trip);
+        }
+    }
+
+
+    public void addAddress(Address address) {
+        addresses.add(address);
+        address.setUser(this);
+    }
+
+    public void removeAddress(Address address) {
+        addresses.remove(address);
+        address.setUser(null);
     }
 }
