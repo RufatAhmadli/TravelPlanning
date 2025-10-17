@@ -17,6 +17,7 @@ import java.time.LocalDate;
 public class TripDto {
     @Null(groups = OnCreate.class)
     private Long id;
+
     @NotBlank
     @Size(min = 2, max = 30)
     private String destination;

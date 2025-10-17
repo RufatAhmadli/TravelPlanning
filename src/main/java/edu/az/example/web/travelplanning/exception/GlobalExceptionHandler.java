@@ -1,6 +1,5 @@
 package edu.az.example.web.travelplanning.exception;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,9 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(AddressNotFoundException.class)
+    @ExceptionHandler({
+            AddressNotFoundException.class,
+            TripNotFoundException.class})
     public ResponseEntity<?> handleEntityNotFoundException(Exception e, HttpServletRequest request) {
         Map<String, Object> error = new HashMap<>();
         buildResponse(error, e.getMessage(), HttpStatus.NOT_FOUND, request);
