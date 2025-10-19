@@ -1,0 +1,103 @@
+databaseChangeLog:
+  # First, drop the existing columns if they exist
+  - changeSet:
+      id: 1760903626373-1
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: trips
+            columnName: arrival_time
+      changes:
+        - dropColumn:
+            columnName: arrival_time
+            tableName: trips
+
+  - changeSet:
+      id: 1760903626373-1b
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - columnExists:
+            tableName: trips
+            columnName: departure_time
+      changes:
+        - dropColumn:
+            columnName: departure_time
+            tableName: trips
+
+  # Add arrival_time as nullable first
+  - changeSet:
+      id: 1760903626373-2
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            tableName: trips
+            columns:
+              - column:
+                  name: arrival_time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: true
+
+  # Add departure_time as nullable first
+  - changeSet:
+      id: 1760903626373-3
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            tableName: trips
+            columns:
+              - column:
+                  name: departure_time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: true
+
+  # Update existing rows with default values
+  - changeSet:
+      id: 1760903626373-4
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - sql:
+            sql: >
+              UPDATE trips 
+              SET arrival_time = CURRENT_TIMESTAMP 
+              WHERE arrival_time IS NULL;
+
+  - changeSet:
+      id: 1760903626373-5
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - sql:
+            sql: >
+              UPDATE trips 
+              SET departure_time = CURRENT_TIMESTAMP 
+              WHERE departure_time IS NULL;
+
+  # Now add NOT NULL constraints
+  - changeSet:
+      id: 1760903626373-6
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addNotNullConstraint:
+            tableName: trips
+            columnName: arrival_time
+            columnDataType: TIMESTAMP
+
+  - changeSet:
+      id: 1760903626373-7
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addNotNullConstraint:
+            tableName: trips
+            columnName: departure_time
+            columnDataType: TIMESTAMP

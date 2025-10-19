@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -25,9 +26,9 @@ public class Trip {
     @Column(nullable = false)
     private String destination;
     @Column(nullable = false)
-    private LocalDate departureTime;
+    private LocalDateTime departureTime;
     @Column(nullable = false)
-    private LocalDate arrivalTime;
+    private LocalDateTime arrivalTime;
     @Column(nullable = false)
     private String description;
 
