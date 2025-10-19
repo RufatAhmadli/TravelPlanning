@@ -3,6 +3,8 @@ package edu.az.example.web.travelplanning.service;
 import edu.az.example.web.travelplanning.dto.AuthRequest;
 import edu.az.example.web.travelplanning.dto.AuthResponse;
 import edu.az.example.web.travelplanning.dto.UserDto;
+import edu.az.example.web.travelplanning.exception.ConfirmPasswordException;
+import edu.az.example.web.travelplanning.exception.EmailAlreadyExistsException;
 import edu.az.example.web.travelplanning.mapper.UserMapper;
 import edu.az.example.web.travelplanning.model.entity.Role;
 import edu.az.example.web.travelplanning.model.entity.User;
@@ -58,11 +60,11 @@ public class AuthService {
 
     private void validateRegistration(UserDto userDto) {
         if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
-            throw new IllegalArgumentException("Passwords do not match");
+            throw new ConfirmPasswordException();
         }
 
         if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new EmailAlreadyExistsException();
         }
     }
 
