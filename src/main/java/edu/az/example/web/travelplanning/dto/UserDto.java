@@ -1,6 +1,7 @@
 package edu.az.example.web.travelplanning.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.az.example.web.travelplanning.enums.Gender;
 import edu.az.example.web.travelplanning.validation.OnCreate;
 import edu.az.example.web.travelplanning.validation.OnRegister;
@@ -38,10 +39,12 @@ public class UserDto {
     @NotNull(groups = {OnCreate.class, OnRegister.class})
     private Gender gender;
 
-    @NotBlank(groups = {OnCreate.class, OnRegister.class})
+    @NotBlank(groups = {OnCreate.class,OnRegister.class})
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @NotBlank(groups = OnRegister.class)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String confirmPassword;
 
     private List<AddressDto> addresses;
