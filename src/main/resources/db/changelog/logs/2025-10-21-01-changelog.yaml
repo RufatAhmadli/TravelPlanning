@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1760991563839-1
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_reviews
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: rating
+                  type: INT
+              - column:
+                  name: comment
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: trip_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+            tableName: reviews
+  - changeSet:
+      id: 1760991563839-2
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: trip_id
+            baseTableName: reviews
+            constraintName: FK_REVIEWS_ON_TRIP
+            referencedColumnNames: id
+            referencedTableName: trips
+  - changeSet:
+      id: 1760991563839-3
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: reviews
+            constraintName: FK_REVIEWS_ON_USER
+            referencedColumnNames: id
+            referencedTableName: users
+
