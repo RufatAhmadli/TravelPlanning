@@ -33,6 +33,7 @@ public class AddressService {
     public AddressDto findById(Long id) {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new AddressNotFoundException(id));
+
         if (!userSecurity.isOwner(address.getUser().getId())) {
             throw new SecurityException("User is not owner of this address");
         }
