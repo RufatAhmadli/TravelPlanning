@@ -49,4 +49,5 @@ public class UserDto {
 
     private List<AddressDto> addresses;
     private List<TripDto> trips;
+    private List<ReviewDto> reviews;
 }

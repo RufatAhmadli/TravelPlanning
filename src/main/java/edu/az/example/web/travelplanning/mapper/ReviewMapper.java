@@ -28,6 +28,7 @@ public interface ReviewMapper {
     @Named("userWithoutRelations")
     UserDto userWithoutAddressesAndTrips(User user);
 
+    @Mapping(target = "reviews", ignore = true)
     @Named("tripWithoutRelations")
     TripDto mapTripWithoutRelations(Trip trip);
 }

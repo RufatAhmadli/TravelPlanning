@@ -1,5 +1,6 @@
 package edu.az.example.web.travelplanning.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.az.example.web.travelplanning.validation.OnCreate;
 import edu.az.example.web.travelplanning.validation.OnUpdate;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReviewDto {
     @Null(groups = OnCreate.class)
     @NotNull(groups = OnUpdate.class)
