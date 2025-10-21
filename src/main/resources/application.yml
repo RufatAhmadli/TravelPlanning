@@ -21,5 +21,6 @@ spring:
 
 logging:
   level:
-    root: debug
+    root: info
+    edu.az.example.web.travelplanning: debug
 
