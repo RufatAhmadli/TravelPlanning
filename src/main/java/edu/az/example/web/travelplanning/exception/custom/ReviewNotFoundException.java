@@ -1,4 +1,4 @@
-package edu.az.example.web.travelplanning.exception;
+package edu.az.example.web.travelplanning.exception.custom;
 
 public class ReviewNotFoundException extends RuntimeException {
 

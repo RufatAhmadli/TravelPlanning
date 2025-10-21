@@ -1,8 +1,8 @@
 package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.dto.ReviewDto;
-import edu.az.example.web.travelplanning.exception.ReviewNotFoundException;
-import edu.az.example.web.travelplanning.exception.TripNotFoundException;
+import edu.az.example.web.travelplanning.exception.custom.ReviewNotFoundException;
+import edu.az.example.web.travelplanning.exception.custom.TripNotFoundException;
 import edu.az.example.web.travelplanning.mapper.ReviewMapper;
 import edu.az.example.web.travelplanning.model.entity.Trip;
 import edu.az.example.web.travelplanning.model.entity.TripReview;

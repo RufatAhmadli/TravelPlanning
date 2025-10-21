@@ -1,11 +1,8 @@
-package edu.az.example.web.travelplanning.exception;
+package edu.az.example.web.travelplanning.exception.custom;
 
 public class EmailAlreadyExistsException extends RuntimeException {
+
     public EmailAlreadyExistsException() {
         super("Email already exists");
-    }
-
-    public EmailAlreadyExistsException(String message) {
-        super(message);
     }
 }

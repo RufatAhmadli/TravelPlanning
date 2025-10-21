@@ -3,10 +3,10 @@ package edu.az.example.web.travelplanning.service;
 import edu.az.example.web.travelplanning.enums.Gender;
 import edu.az.example.web.travelplanning.dto.UserDto;
 import edu.az.example.web.travelplanning.dto.UserPatchDto;
+import edu.az.example.web.travelplanning.exception.custom.UserNotFoundException;
 import edu.az.example.web.travelplanning.model.entity.User;
 import edu.az.example.web.travelplanning.mapper.UserMapper;
 import edu.az.example.web.travelplanning.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class UserService {
     public UserDto findById(Long id) {
         return userRepository.findById(id)
                 .map(userMapper::toUserDto)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public List<UserDto> findByFirstname(String username) {
@@ -69,7 +69,7 @@ public class UserService {
             throw new IllegalArgumentException();
         }
         User user = userRepository.findById(id).
-                orElseThrow(EntityNotFoundException::new);
+                orElseThrow(() -> new UserNotFoundException(id));
         userMapper.updateUserEntity(user, userDto);
         userRepository.save(user);
         return userMapper.toUserDto(user);
@@ -80,7 +80,7 @@ public class UserService {
             throw new IllegalArgumentException();
         }
         User user = userRepository.findById(id).
-                orElseThrow(EntityNotFoundException::new);
+                orElseThrow(() -> new UserNotFoundException(id));
 
         userMapper.applyPatch(user, userDto);
         return userMapper.toUserDto(userRepository.save(user));
@@ -91,7 +91,7 @@ public class UserService {
             throw new IllegalArgumentException();
         }
         if (!userRepository.existsById(id)) {
-            throw new EntityNotFoundException();
+            throw new UserNotFoundException(id);
         }
         userRepository.deleteById(id);
     }

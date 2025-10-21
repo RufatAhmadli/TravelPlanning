@@ -18,3 +18,8 @@ spring:
     properties:
       hibernate:
         platform: org.hibernate.dialect.PostgresSQLDialect
+
+logging:
+  level:
+    root: debug
+
