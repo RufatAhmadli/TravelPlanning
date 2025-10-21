@@ -1,6 +1,7 @@
 package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.dto.ReviewDto;
+import edu.az.example.web.travelplanning.exception.custom.MultipleReviewCreationException;
 import edu.az.example.web.travelplanning.exception.custom.ReviewNotFoundException;
 import edu.az.example.web.travelplanning.exception.custom.TripNotFoundException;
 import edu.az.example.web.travelplanning.mapper.ReviewMapper;
@@ -56,6 +57,10 @@ public class ReviewService {
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new TripNotFoundException(tripId));
 
+        if (reviewRepository.existsByUserIdAndTripId(userSecurity.getCurrentUser().getId(),
+                tripId)) {
+            throw new MultipleReviewCreationException();
+        }
         TripReview reviewEntity = reviewMapper.toReviewEntity(reviewDto);
         reviewEntity.setUser(userSecurity.getCurrentUser());
         reviewEntity.setTrip(trip);

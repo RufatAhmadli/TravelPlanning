@@ -50,7 +50,8 @@ public class GlobalExceptionHandler {
             EmailAlreadyExistsException.class,
             ConfirmPasswordException.class,
             RoleNotFoundException.class,
-            IllegalArgumentException.class})
+            IllegalArgumentException.class,
+            MultipleReviewCreationException.class})
     public ResponseEntity<ErrorResponse> handleBusinessExceptions(
             Exception e, HttpServletRequest request) {
 

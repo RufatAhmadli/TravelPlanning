@@ -13,4 +13,7 @@ public interface ReviewRepository extends JpaRepository<TripReview,Long> {
 
     @Query("select t from TripReview t where t.trip.id = ?1")
     List<TripReview> findByTripId(Long tripId);
+
+    @Query("select (count(t) > 0) from TripReview t where t.user.id = ?1 and t.trip.id = ?2")
+    boolean existsByUserIdAndTripId(Long userId, Long tripId);
 }
