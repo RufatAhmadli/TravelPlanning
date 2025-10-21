@@ -7,11 +7,12 @@ import edu.az.example.web.travelplanning.model.entity.User;
 import org.mapstruct.*;
 
 
-@Mapper(uses = {TripMapper.class, AddressMapper.class})
+@Mapper(uses = {TripMapper.class, AddressMapper.class, ReviewMapper.class})
 public interface UserMapper {
     @Mapping(target = "confirmPassword", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "firstName", source = "name")
+    @Mapping(target = "reviews", qualifiedByName = "reviewsWithoutTripAndUser")
     UserDto toUserDto(User user);
 
     @Mapping(target = "role", ignore = true)

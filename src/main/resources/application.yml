@@ -18,3 +18,9 @@ spring:
     properties:
       hibernate:
         platform: org.hibernate.dialect.PostgresSQLDialect
+
+logging:
+  level:
+    root: info
+    edu.az.example.web.travelplanning: debug
+

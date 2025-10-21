@@ -20,17 +20,25 @@ public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String departure;
+
     @Column(nullable = false)
     private String destination;
+
     @Column(nullable = false)
     private LocalDateTime departureTime;
+
     @Column(nullable = false)
     private LocalDateTime arrivalTime;
+
     @Column(nullable = false)
     private String description;
 
     @ManyToMany(mappedBy = "trips")
     private List<User> users;
+
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TripReview> tripReviews;
 }

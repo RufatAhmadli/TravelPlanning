@@ -2,7 +2,7 @@ package edu.az.example.web.travelplanning.service;
 
 import edu.az.example.web.travelplanning.enums.AddressType;
 import edu.az.example.web.travelplanning.dto.AddressDto;
-import edu.az.example.web.travelplanning.exception.AddressNotFoundException;
+import edu.az.example.web.travelplanning.exception.custom.AddressNotFoundException;
 import edu.az.example.web.travelplanning.model.entity.Address;
 import edu.az.example.web.travelplanning.mapper.AddressMapper;
 import edu.az.example.web.travelplanning.model.entity.User;
@@ -33,6 +33,7 @@ public class AddressService {
     public AddressDto findById(Long id) {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new AddressNotFoundException(id));
+
         if (!userSecurity.isOwner(address.getUser().getId())) {
             throw new SecurityException("User is not owner of this address");
         }

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Getter
@@ -36,4 +37,5 @@ public class TripDto {
 
     private String description;
 
+    private List<ReviewDto> reviews;
 }

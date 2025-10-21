@@ -52,6 +52,9 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TripReview> reviews;
+
     public void addTrip(Trip trip) {
         if (trip != null) {
             this.trips.add(trip);
