@@ -2,6 +2,7 @@ package edu.az.example.web.travelplanning.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Check;
 
 @Entity
 @NoArgsConstructor
@@ -9,8 +10,10 @@ import lombok.*;
 @Getter
 @Setter
 @Table(
-        name = "reviews"
+        name = "reviews",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"trip_id", "user_id"})
 )
+@Check(constraints = "rating >= 1 AND rating <= 5")
 public class TripReview {
 
     @Id
