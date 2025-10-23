@@ -70,6 +70,21 @@ public class ReviewService {
     }
 
     @Transactional
+    public ReviewDto updateReview(Long id, ReviewDto reviewDto) {
+        TripReview review = reviewRepository.findById(id).
+                orElseThrow(ReviewNotFoundException::new);
+
+        if (!userSecurity.isOwner(review.getUser().getId())) {
+            throw new AccessDeniedException("You are not allowed to update the review");
+        }
+
+        TripReview updatedReview = reviewMapper.updateReview(review, reviewDto);
+        reviewRepository.save(updatedReview);
+        return reviewMapper.toReviewDto(updatedReview);
+
+    }
+
+    @Transactional
     public void deleteReview(Long reviewId) {
         TripReview review = reviewRepository.findById(reviewId)
                 .orElseThrow(ReviewNotFoundException::new);
