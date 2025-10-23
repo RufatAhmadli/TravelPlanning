@@ -24,5 +24,5 @@ public interface RoleMapper {
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "id", ignore = true)
-    Role updateRole(RoleDto roleDto, @MappingTarget Role role);
+    void updateRoleEntity(RoleDto roleDto, @MappingTarget Role role);
 }

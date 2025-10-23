@@ -3,6 +3,7 @@ package edu.az.example.web.travelplanning.controller;
 import edu.az.example.web.travelplanning.dto.TripDto;
 import edu.az.example.web.travelplanning.service.TripService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +56,7 @@ public class TripController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTrip(@PathVariable Long id) {
         tripService.delete(id);
     }

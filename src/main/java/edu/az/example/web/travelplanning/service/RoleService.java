@@ -5,7 +5,6 @@ import edu.az.example.web.travelplanning.exception.custom.RoleNotFoundException;
 import edu.az.example.web.travelplanning.mapper.RoleMapper;
 import edu.az.example.web.travelplanning.model.entity.Role;
 import edu.az.example.web.travelplanning.repository.RoleRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,5 +36,21 @@ public class RoleService {
     public RoleDto createRole(RoleDto roleDto) {
         Role role = roleMapper.toRole(roleDto);
         return roleMapper.toRoleDto(roleRepository.save(role));
+    }
+
+    @Transactional
+    public RoleDto updateRole(Long id,RoleDto roleDto) {
+        Role role = roleRepository.findById(id).
+                orElseThrow(() -> new RoleNotFoundException(id));
+        roleMapper.updateRoleEntity(roleDto, role);
+        return roleMapper.toRoleDto(roleRepository.save(role));
+    }
+
+    @Transactional
+    public void deleteRole(Long id) {
+        roleRepository.findById(id).
+                orElseThrow(() -> new RoleNotFoundException(id));
+
+        roleRepository.deleteById(id);
     }
 }

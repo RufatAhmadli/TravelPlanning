@@ -33,4 +33,16 @@ public class RoleController {
         return new ResponseEntity<>(roleService.createRole(roleDto), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<RoleDto> updateRole(@PathVariable Long id,
+                                              @Valid @RequestBody RoleDto roleDto) {
+        return ResponseEntity.ok(roleService.updateRole(id,roleDto));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteRole(@PathVariable Long id) {
+        roleService.deleteRole(id);
+    }
+
 }
