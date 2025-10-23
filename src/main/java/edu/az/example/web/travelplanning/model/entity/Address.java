@@ -13,9 +13,9 @@ import lombok.*;
 @Table(
         name = "Addresses"
 )
-public class Address {
+public class Address extends BaseEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -24,7 +24,7 @@ public class Address {
     @Column(nullable = false)
     private String street;
 
-    @Column(name = "№",nullable = false)
+    @Column(name = "№", nullable = false)
     private String streetNumber;
 
     @Column(nullable = false)

@@ -14,7 +14,7 @@ import org.hibernate.annotations.Check;
         uniqueConstraints = @UniqueConstraint(columnNames = {"trip_id", "user_id"})
 )
 @Check(constraints = "rating >= 1 AND rating <= 5")
-public class TripReview {
+public class TripReview extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
