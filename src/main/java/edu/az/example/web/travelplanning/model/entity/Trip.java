@@ -36,6 +36,12 @@ public class Trip extends BaseEntity {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private Double price;
+
+    @Column(nullable = false)
+    private Double avgRating;
+
     @ManyToMany(mappedBy = "trips")
     private List<User> users;
 

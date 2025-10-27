@@ -35,6 +35,11 @@ public class TripDto {
     @Future
     private LocalDate arrivalTime;
 
+    @NotNull
+    private Double price;
+
+    private Double avgRating;
+
     private String description;
 
     private List<ReviewDto> reviews;
