@@ -19,11 +19,13 @@ public interface TripMapper {
     @Mapping(target = "tripReviews", source = "reviews")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "users", ignore = true)
+    @Mapping(target = "avgRating", ignore = true)
     Trip toTripEntity(TripDto tripDto);
 
     @Mapping(target = "tripReviews", ignore = true)
     @Mapping(target = "users", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "avgRating", ignore = true)
     void updateTripEntity(@MappingTarget Trip trip, TripDto tripDto);
 
     @Named("reviewsWithoutTripAndUser")

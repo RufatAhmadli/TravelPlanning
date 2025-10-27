@@ -61,13 +61,23 @@ public class ReviewService {
                 tripId)) {
             throw new MultipleReviewCreationException();
         }
+
         TripReview reviewEntity = reviewMapper.toReviewEntity(reviewDto);
         reviewEntity.setUser(userSecurity.getCurrentUser());
         reviewEntity.setTrip(trip);
-
         TripReview saved = reviewRepository.save(reviewEntity);
+
+        calculateAverage(tripId, trip);
+
         return reviewMapper.toReviewDto(saved);
     }
+
+    private void calculateAverage(Long tripId, Trip trip) {
+        Double avgRating = reviewRepository.calculateAverageRatingByTripId(tripId);
+        trip.setAvgRating(avgRating != null ? avgRating : 0.0);
+        tripRepository.save(trip);
+    }
+
 
     @Transactional
     public ReviewDto updateReview(Long id, ReviewDto reviewDto) {
@@ -95,5 +105,4 @@ public class ReviewService {
 
         reviewRepository.deleteById(reviewId);
     }
-
 }

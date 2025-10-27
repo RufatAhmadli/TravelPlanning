@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1761588049160-1
+      author: user
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: double
+            columnName: avg_rating
+            tableName: trips
+
