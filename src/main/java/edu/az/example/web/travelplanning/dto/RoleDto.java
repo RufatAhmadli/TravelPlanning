@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,4 +18,6 @@ public class RoleDto {
 
     @NotBlank
     private String name;
+
+    private List<UserDto> users;
 }

@@ -5,7 +5,9 @@ import edu.az.example.web.travelplanning.dto.UserPatchDto;
 import edu.az.example.web.travelplanning.validation.OnCreate;
 import edu.az.example.web.travelplanning.dto.UserDto;
 import edu.az.example.web.travelplanning.service.UserService;
+import edu.az.example.web.travelplanning.validation.OnUpdate;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/users")
+@RequestMapping("/api/v1/users")
+@Validated
 public class UserController {
     private final UserService userService;
 
@@ -31,7 +34,7 @@ public class UserController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN') or @userSecurity.isOwner(#id)")
-    public UserDto getById(@PathVariable Long id) {
+    public UserDto getById(@Positive @PathVariable Long id) {
         return userService.findById(id);
     }
 
@@ -49,17 +52,26 @@ public class UserController {
         return userService.create(userDto);
     }
 
+    @PutMapping("/{userId}/role")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserDto> assignRole(@Positive @PathVariable Long userId,
+                                              @Positive @RequestParam Long roleId) {
+        return ResponseEntity.ok(userService.assignRole(userId, roleId));
+    }
+
+
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN') or @userSecurity.isOwner(#id)")
-    public UserDto update(@PathVariable Long id, @RequestBody @Valid UserDto userDto) {
+    public UserDto update(@Positive @PathVariable Long id,
+                          @RequestBody @Validated(OnUpdate.class) UserDto userDto) {
         return userService.update(id, userDto);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN') or @userSecurity.isOwner(#id)")
-    public ResponseEntity<UserDto> partialUpdate(@PathVariable Long id,
+    public ResponseEntity<UserDto> partialUpdate(@Positive @PathVariable Long id,
                                                  @RequestBody @Valid UserPatchDto userPatchDto) {
         UserDto userDto = userService.partialUpdate(id, userPatchDto);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
@@ -68,7 +80,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') or @userSecurity.isOwner(#id)")
-    public void delete(@PathVariable Long id) {
+    public void delete(@Positive @PathVariable Long id) {
         userService.delete(id);
     }
 
