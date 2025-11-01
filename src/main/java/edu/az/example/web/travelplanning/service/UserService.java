@@ -12,6 +12,7 @@ import edu.az.example.web.travelplanning.repository.RoleRepository;
 import edu.az.example.web.travelplanning.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
+    private final BCryptPasswordEncoder encoder;
 
     private static final String DEFAULT_ROLE = "USER";
 
@@ -63,6 +65,7 @@ public class UserService {
 
     public UserDto create(UserDto userDto) {
         User user = userMapper.toUserEntity(userDto);
+        user.setPassword(encoder.encode(user.getPassword()));
         Role role = roleRepository.findByName(DEFAULT_ROLE)
                 .orElseThrow(() -> new RoleNotFoundException("No such a role"));
 
