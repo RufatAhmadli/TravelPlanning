@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -39,7 +39,7 @@ public class TripController {
     @GetMapping("/time/{departureTime}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public List<TripDto> getByDepartureTime(@PathVariable LocalDate departureTime) {
+    public List<TripDto> getByDepartureTime(@PathVariable LocalDateTime departureTime) {
         return tripService.findAllByDepartureTime(departureTime);
     }
 

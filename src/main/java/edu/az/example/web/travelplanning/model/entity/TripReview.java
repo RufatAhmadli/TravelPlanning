@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Check;
 
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

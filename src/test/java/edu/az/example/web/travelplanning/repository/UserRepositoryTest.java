@@ -1,20 +1,24 @@
 package edu.az.example.web.travelplanning.repository;
 
 
+import edu.az.example.web.travelplanning.TestAuditable;
 import edu.az.example.web.travelplanning.model.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static edu.az.example.web.travelplanning.enums.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class UserRepositoryTest {
+@ActiveProfiles("test")
+class UserRepositoryTest implements TestAuditable {
     @Autowired
     private UserRepository userRepository;
 
@@ -30,6 +34,8 @@ class UserRepositoryTest {
                 .age(13)
                 .gender(MALE)
                 .build();
+
+        assignAuditFields(user);
     }
 
     @Test

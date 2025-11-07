@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class TripService {
     }
 
     @Transactional(readOnly = true)
-    public List<TripDto> findAllByDepartureTime(LocalDate departureTime) {
+    public List<TripDto> findAllByDepartureTime(LocalDateTime departureTime) {
         return tripRepository.findAllByDepartureTime(departureTime)
                 .stream()
                 .map(tripMapper::toTripDto)

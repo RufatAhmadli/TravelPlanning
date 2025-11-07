@@ -1,12 +1,14 @@
 package edu.az.example.web.travelplanning.service;
 
+import edu.az.example.web.travelplanning.TestAuditable;
+import edu.az.example.web.travelplanning.exception.custom.AddressNotFoundException;
 import edu.az.example.web.travelplanning.mapper.AddressMapper;
 import edu.az.example.web.travelplanning.dto.AddressDto;
 import edu.az.example.web.travelplanning.model.entity.Address;
+import edu.az.example.web.travelplanning.model.entity.User;
 import edu.az.example.web.travelplanning.repository.AddressRepository;
-import jakarta.persistence.EntityNotFoundException;
+import edu.az.example.web.travelplanning.security.UserSecurity;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -14,19 +16,25 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static edu.az.example.web.travelplanning.enums.AddressType.HOME;
 import static edu.az.example.web.travelplanning.enums.AddressType.WORK;
+import static edu.az.example.web.travelplanning.enums.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AddressServiceTest {
+class AddressServiceTest implements TestAuditable {
     @Mock
     private AddressRepository addressRepository;
     @Mock
     private AddressMapper addressMapper;
+    @Mock
+    private UserSecurity userSecurity;
     @InjectMocks
     private AddressService addressService;
 
@@ -36,6 +44,18 @@ class AddressServiceTest {
 
     @BeforeEach
     void setUp() {
+        User user = User.builder()
+                .name("John")
+                .lastName("Doe")
+                .email("john.doe@example.com")
+                .password("password123")
+                .age(13)
+                .gender(MALE)
+                .addresses(new ArrayList<>())
+                .build();
+
+        assignAuditFields(user);
+
         address = Address.builder()
                 .id(1L)
                 .street("Haydar Aliyev")
@@ -43,7 +63,9 @@ class AddressServiceTest {
                 .city("Baku")
                 .postalCode("AZ100")
                 .addressType(HOME)
+                .user(user)
                 .build();
+        assignAuditFields(address);
 
         addressDto = AddressDto.builder()
                 .id(1L)
@@ -78,14 +100,29 @@ class AddressServiceTest {
     }
 
     @Test
-    void testFindById() {
-        when(addressRepository.findById(1L)).thenReturn(java.util.Optional.of(address));
+    void testFindById_whenUserIsOwner() {
+        when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
         when(addressMapper.toAddressDto(address)).thenReturn(addressDto);
+        when(userSecurity.isOwner(address.getUser().getId())).thenReturn(true);
 
         AddressDto foundDto = addressService.findById(1L);
         assertEquals(address.getId(), foundDto.getId());
         assertEquals(address.getStreet(), foundDto.getStreet());
         assertEquals(address.getStreetNumber(), foundDto.getStreetNumber());
+    }
+
+    @Test
+    void testFindById_whenUserIsNotOwner() {
+        when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
+        when(userSecurity.isOwner(address.getUser().getId())).thenReturn(false);
+
+        assertThrows(SecurityException.class, () -> addressService.findById(1L));
+    }
+
+    @Test
+    void testFindById_notFound() {
+        when(addressRepository.findById(99L)).thenReturn(Optional.empty());
+        assertThrows(AddressNotFoundException.class, () -> addressService.findById(99L));
     }
 
     @Test
@@ -146,9 +183,10 @@ class AddressServiceTest {
 
     @Test
     void testCreate() {
-        when(addressMapper.toAddressDto(address)).thenReturn(addressDto);
-        when(addressRepository.save(address)).thenReturn(address);
-        when(addressMapper.toAddressEntity(addressDto)).thenReturn(address);
+        when(addressMapper.toAddressEntity(any(AddressDto.class))).thenReturn(address);
+        when(addressRepository.save(any(Address.class))).thenReturn(address);
+        when(addressMapper.toAddressDto(any(Address.class))).thenReturn(addressDto);
+        when(userSecurity.getCurrentUser()).thenReturn(address.getUser());
 
         AddressDto res = addressService.create(addressDto);
         ArgumentCaptor<Address> captor = ArgumentCaptor.forClass(Address.class);
@@ -169,11 +207,12 @@ class AddressServiceTest {
     }
 
     @Test
-    void testUpdate() {
-        when(addressRepository.findById(1L)).thenReturn(java.util.Optional.of(address));
+    void testUpdate_whenUserIsOwner() {
+        when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
         when(addressMapper.toAddressDto(address)).thenReturn(updatedDto);
         doNothing().when(addressMapper).updateAddressEntity(address, addressDto);
         when(addressRepository.save(address)).thenReturn(address);
+        when(userSecurity.isOwner(address.getUser().getId())).thenReturn(true);
 
         AddressDto res = addressService.update(1L, addressDto);
         assertEquals(1L, res.getId());
@@ -183,10 +222,17 @@ class AddressServiceTest {
     }
 
     @Test
-    void testUpdateNullId() {
-        assertThrows(IllegalArgumentException.class, () -> addressService.update(null, addressDto));
-        verifyNoInteractions(addressRepository);
+    void testUpdate_UserIsNotOwner() {
+        when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
+        when(userSecurity.isOwner(address.getUser().getId())).thenReturn(false);
 
+        assertThrows(SecurityException.class, () -> addressService.update(1L, addressDto));
+    }
+
+    @Test
+    void testUpdate_notFound() {
+        when(addressRepository.findById(99L)).thenReturn(Optional.empty());
+        assertThrows(AddressNotFoundException.class, () -> addressService.update(99L, addressDto));
     }
 
     @Test
@@ -196,30 +242,26 @@ class AddressServiceTest {
     }
 
     @Test
-    void testUpdateNonExistentDto() {
-        when(addressRepository.findById(1L)).thenReturn(java.util.Optional.empty());
+    void testDeleteById_whenUserIsOwner() {
+        when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
+        when(userSecurity.isOwner(address.getUser().getId())).thenReturn(true);
 
-        assertThrows(EntityNotFoundException.class, () -> addressService.update(1L, addressDto));
-        verify(addressRepository, never()).save(any(Address.class));
-    }
-
-    @Test
-    void testDeleteById() {
-        when(addressRepository.existsById(1L)).thenReturn(true);
         addressService.deleteById(1L);
         verify(addressRepository).deleteById(1L);
     }
 
     @Test
-    @DisplayName("Should throw exception when id is null")
-    void testDeleteNullId() {
-        assertThrows(IllegalArgumentException.class, () -> addressService.deleteById(null));
+    void testDeleteById_whenUserIsNotOwner() {
+        when(addressRepository.findById(1L)).thenReturn(Optional.of(address));
+        when(userSecurity.isOwner(address.getUser().getId())).thenReturn(false);
+
+        assertThrows(SecurityException.class, () -> addressService.deleteById(1L));
+        verify(addressRepository, never()).deleteById(anyLong());
     }
 
     @Test
-    @DisplayName("Should throw exception when address is not found")
-    void testDeleteNotFoundAddress() {
-        when(addressRepository.existsById(999L)).thenReturn(false);
-        assertThrows(EntityNotFoundException.class, () -> addressService.deleteById(999L));
+    void testDeleteById_notFound() {
+        when(addressRepository.findById(999L)).thenReturn(Optional.empty());
+        assertThrows(AddressNotFoundException.class, () -> addressService.deleteById(999L));
     }
 }
