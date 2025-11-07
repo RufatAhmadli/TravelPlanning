@@ -2,11 +2,12 @@ package edu.az.example.web.travelplanning.mapper;
 
 import edu.az.example.web.travelplanning.dto.NotificationDto;
 import edu.az.example.web.travelplanning.model.entity.Notification;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper
+@Mapper(builder = @Builder(disableBuilder = true))
 public interface NotificationMapper {
     NotificationDto toNotificationDto(Notification notification);
 
