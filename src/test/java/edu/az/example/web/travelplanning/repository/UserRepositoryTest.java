@@ -1,6 +1,7 @@
 package edu.az.example.web.travelplanning.repository;
 
 
+import edu.az.example.web.travelplanning.TestAuditable;
 import edu.az.example.web.travelplanning.model.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
-class UserRepositoryTest {
+class UserRepositoryTest implements TestAuditable {
     @Autowired
     private UserRepository userRepository;
 
@@ -34,10 +35,7 @@ class UserRepositoryTest {
                 .gender(MALE)
                 .build();
 
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-        user.setCreatedBy("test-user");
-        user.setUpdatedBy("test-user");
+        assignAuditFields(user);
     }
 
     @Test

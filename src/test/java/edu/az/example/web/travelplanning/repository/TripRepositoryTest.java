@@ -1,5 +1,6 @@
 package edu.az.example.web.travelplanning.repository;
 
+import edu.az.example.web.travelplanning.TestAuditable;
 import edu.az.example.web.travelplanning.model.entity.Trip;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
-class TripRepositoryTest {
+class TripRepositoryTest implements TestAuditable {
     @Autowired
     private TripRepository tripRepository;
 
@@ -34,10 +35,7 @@ class TripRepositoryTest {
                 .destination("New York")
                 .price(100.00)
                 .build();
-        trip.setCreatedAt(LocalDateTime.now());
-        trip.setUpdatedAt(LocalDateTime.now());
-        trip.setCreatedBy("test-user");
-        trip.setUpdatedBy("test-user");
+        assignAuditFields(trip);
     }
 
     @Test

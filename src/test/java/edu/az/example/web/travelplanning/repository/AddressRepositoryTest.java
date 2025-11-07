@@ -1,5 +1,6 @@
 package edu.az.example.web.travelplanning.repository;
 
+import edu.az.example.web.travelplanning.TestAuditable;
 import edu.az.example.web.travelplanning.model.entity.Address;
 import edu.az.example.web.travelplanning.model.entity.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
-class AddressRepositoryTest {
+class AddressRepositoryTest implements TestAuditable {
     @Autowired
     private TestEntityManager entityManager;
 
@@ -38,10 +39,7 @@ class AddressRepositoryTest {
                 .age(13)
                 .gender(MALE)
                 .build();
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-        user.setCreatedBy("test-user");
-        user.setUpdatedBy("test-user");
+        assignAuditFields(user);
         entityManager.persistAndFlush(user);
 
         address = Address.builder()
@@ -52,10 +50,7 @@ class AddressRepositoryTest {
                 .addressType(HOME)
                 .user(user)
                 .build();
-        address.setCreatedAt(LocalDateTime.now());
-        address.setUpdatedAt(LocalDateTime.now());
-        address.setCreatedBy("test-user");
-        address.setUpdatedBy("test-user");
+        assignAuditFields(address);
     }
 
     @Test
