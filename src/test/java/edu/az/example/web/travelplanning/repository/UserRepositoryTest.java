@@ -6,14 +6,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static edu.az.example.web.travelplanning.enums.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@ActiveProfiles("test")
 class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
@@ -30,6 +33,11 @@ class UserRepositoryTest {
                 .age(13)
                 .gender(MALE)
                 .build();
+
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        user.setCreatedBy("test-user");
+        user.setUpdatedBy("test-user");
     }
 
     @Test
