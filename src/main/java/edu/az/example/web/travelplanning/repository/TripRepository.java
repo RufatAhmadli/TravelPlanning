@@ -3,15 +3,15 @@ package edu.az.example.web.travelplanning.repository;
 import edu.az.example.web.travelplanning.model.entity.Trip;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TripRepository extends JpaRepository<Trip, Long> {
     List<Trip> findAllByDestinationIgnoreCase(String destination);
 
-    List<Trip> findAllByDepartureTime(LocalDate departureTime);
+    @Query("select t from Trip t where t.departureTime = ?1")
+    List<Trip> findAllByDepartureTime(LocalDateTime departureTime);
 
     @Query(value = """
     SELECT t.* FROM trips t
